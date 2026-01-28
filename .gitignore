@@ -1,0 +1,10 @@
+# OS/IDE junk
+.DS_Store
+
+# Python caches
+__pycache__/
+.pytest_cache/
+
+# Allure artifacts
+allure-results/
+allure-report/
