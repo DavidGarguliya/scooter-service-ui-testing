@@ -20,35 +20,35 @@ class OrderPage(BasePage):
 
     # заполняем шаг 1 формы заказа
     @allure.step("Заполнить данные клиента")
-    def fill_customer_form(self, data: dict, timeout: int = DEFAULT_TIMEOUT):
+    def fill_customer_form(self, data: dict, timeout = DEFAULT_TIMEOUT):
         allure.attach(
             "Вводим имя, фамилию, адрес, станцию метро и телефон, затем переходим на шаг деталей аренды.",
             name="Описание шага",
             attachment_type=allure.attachment_type.TEXT,
         )
-        self.type(Loc.INPUT_NAME, data["name"], timeout=timeout)
-        self.type(Loc.INPUT_SURNAME, data["surname"], timeout=timeout)
-        self.type(Loc.INPUT_ADDRESS, data["address"], timeout=timeout)
+        self.type(Loc.INPUT_NAME, data["name"], timeout)
+        self.type(Loc.INPUT_SURNAME, data["surname"], timeout)
+        self.type(Loc.INPUT_ADDRESS, data["address"], timeout)
 
         # станция метро: вводим текст и выбираем пункт из списка
         self.click(Loc.INPUT_METRO, timeout)
-        self.type(Loc.INPUT_METRO, data["metro_station"], clear=True, timeout=timeout)
+        self.type(Loc.INPUT_METRO, data["metro_station"], timeout)
         metro_option = (Loc.METRO_OPTION[0], Loc.METRO_OPTION[1].format(data["metro_station"]))
         self.click(metro_option, timeout)
 
         self.type(Loc.INPUT_PHONE, data["phone_number"], timeout=timeout)
-        self.click(Loc.BUTTON_NEXT, timeout)
+        self.click(Loc.BUTTON_NEXT, timeout=timeout)
 
     # заполняем шаг 2 формы заказа
     @allure.step("Заполнить данные аренды")
-    def fill_rent_form(self, data: dict, timeout: int = DEFAULT_TIMEOUT):
+    def fill_rent_form(self, data: dict, timeout = DEFAULT_TIMEOUT):
         allure.attach(
             "Выбираем дату, срок аренды, цвет самоката и добавляем комментарий, затем подтверждаем заказ.",
             name="Описание шага",
             attachment_type=allure.attachment_type.TEXT,
         )
         # дата начала аренды
-        self.type(Loc.INPUT_DATE, data["start_date"], timeout=timeout)
+        self.type(Loc.INPUT_DATE, data["start_date"], timeout)
         self.wait_visible(Loc.INPUT_DATE, timeout).send_keys(Keys.ENTER)
 
         # срок аренды
@@ -57,15 +57,13 @@ class OrderPage(BasePage):
         option_locator = (Loc.OPTION_DURATION[0], Loc.OPTION_DURATION[1].format(duration_text))
         self.click(option_locator, timeout)
 
-        # цвет самоката
-        if data.get("color_black"):
-            self.click(Loc.CHECKBOX_BLACK, timeout)
-        if data.get("color_grey"):
-            self.click(Loc.CHECKBOX_GREY, timeout)
+        # цвет самоката (однозначно из test_data)
+        color_locator = {"black": Loc.CHECKBOX_BLACK, "grey": Loc.CHECKBOX_GREY}[data["color"]]
+        self.click(color_locator, timeout)
 
         # комментарий
         if data.get("comment"):
-            self.type(Loc.INPUT_COMMENT, data["comment"], timeout=timeout)
+            self.type(Loc.INPUT_COMMENT, data["comment"], timeout)
 
         # кнопка «Заказать» на шаге 2
         self.click(Loc.BUTTON_ORDER, timeout)
@@ -74,7 +72,7 @@ class OrderPage(BasePage):
 
     # возвращаем текст заголовка окна успешного заказа
     @allure.step("Получить заголовок модалки успешного заказа")
-    def get_success_header(self, timeout: int = DEFAULT_TIMEOUT) -> str:
+    def get_success_header(self, timeout = DEFAULT_TIMEOUT) -> str:
         allure.attach(
             "Считываем заголовок окна подтверждения, чтобы убедиться в успешном оформлении.",
             name="Описание шага",
@@ -84,7 +82,7 @@ class OrderPage(BasePage):
 
     # переход по логотипу Самоката
     @allure.step("Клик по логотипу Самоката")
-    def click_scooter_logo(self, timeout: int = DEFAULT_TIMEOUT):
+    def click_scooter_logo(self, timeout = DEFAULT_TIMEOUT):
         allure.attach(
             "Жмём на логотип Самоката в шапке, чтобы вернуться на главную страницу.",
             name="Описание шага",
@@ -94,7 +92,7 @@ class OrderPage(BasePage):
 
     # переход по логотипу Яндекса (открывается новая вкладка)
     @allure.step("Клик по логотипу Яндекса")
-    def click_yandex_logo(self, timeout: int = DEFAULT_TIMEOUT):
+    def click_yandex_logo(self, timeout = DEFAULT_TIMEOUT):
         allure.attach(
             "Жмём на логотип Яндекса в шапке; ожидаем открытие новой вкладки с Дзен/Яндекс.",
             name="Описание шага",

@@ -24,16 +24,14 @@ class RentDetails:
     rent_details_1 = {
     'start_date': '22.11.2025',
     'duration': 3,
-    'color_black': False,
-    'color_grey': True,
+    'color': 'grey',
     'comment': 'comment_1'
     }
     
     rent_details_2 = {
         'start_date': '23.12.2025',
         'duration': 4,
-        'color_black': True,
-        'color_grey': False,
+        'color': 'black',
         'comment': 'comment_2'
     }
     
